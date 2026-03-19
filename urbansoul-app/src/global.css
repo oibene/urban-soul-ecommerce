@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+    --color-bglight: #e8e8e8;
+    --color-red: #990100;
+    --color-light: #f6f6f6;
+    --color-light-gray: #d9d9d9;
+    --color-dark-gray: #333333;
+    --color-gray: #7d7d7d;
+    --color-green: #14924f;
+
+    --font-noto: "Noto Sans";
+}
