@@ -1,11 +1,11 @@
-package controller
+package controllers
 
 import (
 	"encoding/json"
 	"log"
 	"net/http"
 	"strconv"
-	"urbanAPI/repositories"
+	"urbansoul-api/repositories"
 )
 
 func ListProducts(w http.ResponseWriter, r *http.Request) {

@@ -2,14 +2,20 @@ package main
 
 import (
 	"log"
+	"os"
 	"net/http"
-	controller "urbanAPI/controllers"
+	
+	controller "urbansoul-api/controllers"
+	"urbansoul-api/db/database"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
 
 func main() {
+	database.Connect()
+	database.RunMigrations()
+
 	corsOpt := cors.New(
 		cors.Options{
 			AllowedOrigins: []string{"*"},
@@ -46,6 +52,11 @@ func main() {
 
 	http.Handle("/", r)
 
-	log.Println("Servidor rodando na porta :3000")
-	http.ListenAndServe(":3000", corsOpt.Handler(r))
+	port := os.Getenv("API_PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Println("Servidor rodando na porta :", port)
+	http.ListenAndServe(":"+port, corsOpt.Handler(r))
 }

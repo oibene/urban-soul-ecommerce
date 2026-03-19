@@ -1,12 +1,12 @@
 package repositories
 
 import (
-	"urbanAPI/constructors"
-	"urbanAPI/database"
+	"urbansoul-api/constructors"
+	"urbansoul-api/db/database"
 )
 
 func QueryGetCommentsByProductId(id int) (cm []constructors.Comments, err error) {
-	data := database.ConnectSupabase()
+	data := database.Connect()
 
 	err = data.Select(&cm, `SELECT cm.comment_id, cm.comment, cm.rating, cm.comment_date, 
 								ct.customer_id, ct.name, ct.last_name

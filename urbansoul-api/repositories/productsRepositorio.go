@@ -1,12 +1,12 @@
 package repositories
 
 import (
-	"urbanAPI/constructors"
-	"urbanAPI/database"
+	"urbansoul-api/constructors"
+	"urbansoul-api/db/database"
 )
 
 func QueryListProducts() (p []constructors.Products, err error) {
-	data := database.ConnectSupabase()
+	data := database.Connect()
 
 	err = data.Select(&p, `SELECT p.product_id, p.product_name, p.gender, p.size, p.color, p.price, p.descount_price,
 							c.description as category, 
@@ -30,7 +30,7 @@ func QueryListProducts() (p []constructors.Products, err error) {
 }
 
 func QueryGetProductById(id int) (p []constructors.Products, err error) {
-	data := database.ConnectSupabase()
+	data := database.Connect()
 
 	err = data.Select(&p, `SELECT p.product_id, p.product_name, p.gender, p.size, p.color, p.price, p.descount_price,
 							c.description as category, i.img_url
@@ -53,7 +53,7 @@ func QueryGetProductById(id int) (p []constructors.Products, err error) {
 
 func QueryListCategories() (c []constructors.Categories, err error) {
 
-	data := database.ConnectSupabase()
+	data := database.Connect()
 
 	err = data.Select(&c, `SELECT * FROM categories`)
 
@@ -65,7 +65,7 @@ func QueryListCategories() (c []constructors.Categories, err error) {
 }
 
 func QueryGetDetailsByProductId(id int) (d []constructors.Details, err error) {
-	data := database.ConnectSupabase()
+	data := database.Connect()
 
 	err = data.Select(&d, `SELECT d.description, d.notes, d.composition
 							FROM details d
@@ -82,7 +82,7 @@ func QueryGetDetailsByProductId(id int) (d []constructors.Details, err error) {
 }
 
 func QueryGetProductsByOrderId(id int) (o []constructors.Order_Items, err error) {
-	data := database.ConnectSupabase()
+	data := database.Connect()
 
 	err = data.Select(&o, `SELECT o.order_items_id,
 							p.product_id, p.product_name, p.gender, p.size, p.color, p.price, p.descount_price
@@ -98,7 +98,7 @@ func QueryGetProductsByOrderId(id int) (o []constructors.Order_Items, err error)
 }
 
 func QueryGetImagesByProductId(id int) (i []constructors.Images, err error) {
-	data := database.ConnectSupabase()
+	data := database.Connect()
 
 	err = data.Select(&i, `SELECT * FROM images
 							WHERE product_id = $1`, id)

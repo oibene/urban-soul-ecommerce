@@ -1,12 +1,12 @@
 package repositories
 
 import (
-	"urbanAPI/constructors"
-	"urbanAPI/database"
+	"urbansoul-api/constructors"
+	"urbansoul-api/db/database"
 )
 
 func QueryListCustomers() (ct []constructors.Customers, err error) {
-	data := database.ConnectSupabase()
+	data := database.Connect()
 
 	err = data.Select(&ct, `SELECT * FROM customers`)
 
@@ -18,7 +18,7 @@ func QueryListCustomers() (ct []constructors.Customers, err error) {
 }
 
 func QueryGetCustomerById(id int) (ct []constructors.Customers, err error) {
-	data := database.ConnectSupabase()
+	data := database.Connect()
 
 	err = data.Select(&ct, `SELECT *
 							FROM customers 
@@ -32,7 +32,7 @@ func QueryGetCustomerById(id int) (ct []constructors.Customers, err error) {
 }
 
 func QueryCreateNewAccount(accData constructors.Customers) (err error) {
-	data := database.ConnectSupabase()
+	data := database.Connect()
 
 	_, err = data.NamedExec(`INSERT INTO customers (customer_id, name, last_name, email, password, img_URL)
 							VALUES ($1, $2, $3, $4, $5, $6)`, accData)
