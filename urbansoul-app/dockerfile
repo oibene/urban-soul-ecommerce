@@ -3,17 +3,11 @@ FROM node:20
 WORKDIR /app
 
 RUN corepack enable
-RUN corepack prepare pnpm@latest --activate
 
-COPY package*.json pnpm-lock.yaml ./
-
-RUN pnpm config set store-dir /app/ .pnpm-store
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 
 COPY . .
-
-RUN chown -R node:node /app
-USER node
 
 EXPOSE 3000
 CMD["pnpm", "dev"]
