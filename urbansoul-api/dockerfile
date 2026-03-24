@@ -10,4 +10,3 @@ RUN go build -o urbansoul-api .
 
 EXPOSE 8080
 CMD ["./urbansoul-api"]
-

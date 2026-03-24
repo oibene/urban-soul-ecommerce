@@ -6,28 +6,24 @@ services:
     ports:
       - "3000:3000"
     environment:
-      REACT_APP_API_URL: ${REACT_APP_API_URL}
+      REACT_APP_API_URL: http://urbansoul-api:8080
     depends_on:
       - api
     volumes:
       - ./urbansoul-app:/app
-      - /app/node_modules
-    user: "node"
 
   api:
-    build: ./urbansoul-API
-    container_name: urbansoul-API
+    build: ./urbansoul-api
+    container_name: urbansoul-api
+    restart: always
     ports:
       - "8080:8080"
     environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
     depends_on:
-      - db
-  
+      db:
+        condition: service_healthy
+
   db:
     image: postgres:15
     container_name: postgres_db
@@ -35,9 +31,14 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
     volumes:
       - db_data:/var/lib/postgresql/data
