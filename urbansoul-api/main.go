@@ -6,15 +6,12 @@ import (
 	"net/http"
 	
 	controller "urbansoul-api/controllers"
-	"urbansoul-api/db/database"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
 
 func main() {
-	database.Connect()
-	database.RunMigrations()
 
 	corsOpt := cors.New(
 		cors.Options{

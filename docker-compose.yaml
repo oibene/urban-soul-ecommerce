@@ -5,8 +5,6 @@ services:
     container_name: urbansoul-app
     ports:
       - "3000:3000"
-    environment:
-      REACT_APP_API_URL: http://urbansoul-api:8080
     depends_on:
       - api
     volumes:
@@ -19,30 +17,22 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
+      - DATABASE_URL=postgresql://postgres.cefhcvahzzarrccvqhbq:[YOUR-PASSWORD]@aws-0-us-west-2.pooler.supabase.com:6543/postgres
     depends_on:
-      db:
-        condition: service_healthy
+      - app
 
-  db:
+  postgres:
     image: postgres:15
-    container_name: postgres_db
+    container_name: urbansoul-db
     restart: always
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: urbansoul-pass
+      POSTGRES_DB: urbansoul-db
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./db/seeds:/docker-entrypoint-initdb.d
 
 volumes:
   db_data:

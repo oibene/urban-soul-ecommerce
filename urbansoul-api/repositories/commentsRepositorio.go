@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"urbansoul-api/constructors"
-	"urbansoul-api/db/database"
+	"urbansoul-api/database"
 )
 
 func QueryGetCommentsByProductId(id int) (cm []constructors.Comments, err error) {
