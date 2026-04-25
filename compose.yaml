@@ -1,5 +1,8 @@
-services:
+volumes:
+  data:
+  export:
 
+services:
   web:
     build: ./urbansoul-app
     container_name: urbansoul-app
@@ -16,23 +19,17 @@ services:
     restart: always
     ports:
       - "8080:8080"
-    environment:
-      - DATABASE_URL=postgresql://postgres.cefhcvahzzarrccvqhbq:[YOUR-PASSWORD]@aws-0-us-west-2.pooler.supabase.com:6543/postgres
     depends_on:
       - app
 
   postgres:
-    image: postgres:15
+    image: docker.io/postgres:14-alpine
     container_name: urbansoul-db
     restart: always
     ports:
-      - "5433:5432"
+      - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: urbansoul-pass
-      POSTGRES_DB: urbansoul-db
     volumes:
-      - db_data:/var/lib/postgresql/data
-
-volumes:
-  db_data:
+      - data:/var/lib/postgresql/data
+      - export:/export
